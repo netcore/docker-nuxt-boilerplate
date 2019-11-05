@@ -1,0 +1,20 @@
+FROM node:10.15.3-alpine
+
+# Create destination directory
+RUN mkdir -p /app
+WORKDIR /app
+
+# Copy the app, note .dockerignore
+COPY . /app
+
+RUN yarn
+
+# build necessary, even if no static files are needed,
+# since it builds the server as well
+RUN yarn run build
+
+# set app serving to permissive / assigned
+ENV HOST 0.0.0.0
+
+# set app port
+ENV NUXT_PORT=3000
